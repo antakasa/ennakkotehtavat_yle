@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/themes/css/cartodb.css" />
+    <script src="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.13/cartodb.js"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <script type="text/javascript" src="scripts/gauge.js"></script>
+    <script src="scripts/script.js"></script>
+    <script src="scripts/jsonQ.min.js"></script>
+    <script type="text/javascript" src="http://d3js.org/d3.v2.min.js"></script>
+   <style>
+    html, body {width:100%; height:100%; padding: 0; margin: 0;}
+    #map { width: 80%; background: white;}
+   #power-gauge g.arc {
+    fill: steelblue;
+  }
+
+  #power-gauge g.pointer {
+    fill: #e85116;
+    stroke: #b64011;
+  }
+  
+  #power-gauge g.label text {
+    text-anchor: middle;
+    font-size: 8px;
+    font-weight: bold;
+    fill: #666;
+  }
+  </style>
+    <title>Yle ennakkotehtävät</title>
+    <!-- Disable tap highlight on IE -->
+    <meta name="msapplication-tap-highlight" content="no">
+
+    <!-- Web Application Manifest -->
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Web Starter Kit">
+    <link rel="icon" sizes="192x192" href="images/touch/chrome-touch-icon-192x192.png">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Web Starter Kit">
+    <link rel="apple-touch-icon" href="images/touch/apple-touch-icon.png">
+
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
+    <meta name="msapplication-TileColor" content="#2F3BA2">
+
+    <!-- Color the status bar on mobile devices -->
+    <meta name="theme-color" content="#2F3BA2">
+
+    <!-- SEO: If your mobile URL is different from the desktop URL, add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones -->
+    <!--
+    <link rel="canonical" href="http://www.example.com/">
+    -->
+
+    <!-- Material Design Lite page styles:
+    You can choose other color schemes from the CDN, more info here http://www.getmdl.io/customize/index.html
+    Format: material.color1-color2.min.css, some examples:
+    material.red-teal.min.css
+    material.blue-orange.min.css
+    material.purple-indigo.min.css
+    -->
+    <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.indigo-pink.min.css">
+
+    <!-- Material Design icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <!-- Your styles -->
+    <link rel="stylesheet" href="styles/main.css">
+  </head>
+  <body class="mdl-demo mdl-color--grey-100 mdl-color-text--grey-700 mdl-base" onload="init()">
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+      <header class="mdl-layout__header mdl-layout__header--scroll mdl-color--primary">
+        <div class="mdl-layout--large-screen-only mdl-layout__header-row">
+        </div>
+        <div class="mdl-layout--large-screen-only mdl-layout__header-row">
+          <h3>Yle ennakkotehtävät</h3>
+        </div>
+        <div class="mdl-layout--large-screen-only mdl-layout__header-row">
+        </div>
+        <div class="mdl-layout__tab-bar mdl-js-ripple-effect mdl-color--primary-dark">
+          <a href="#overview" class="mdl-layout__tab is-active">Maksuhäiriöt</a>
+          <a href="#features" class="mdl-layout__tab">Analyysi & Vastaukset kysymyksiin</a>
+          <a href="#yhteystiedot" class="mdl-layout__tab">Yhteystiedot</a>
+          <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-shadow--4dp mdl-color--accent" id="add">
+            <i class="material-icons" role="presentation">add</i>
+            <span class="visuallyhidden">Add</span>
+          </button>
+        </div>
+      </header>
+      <main class="mdl-layout__content">
+        <div class="mdl-layout__tab-panel is-active" id="overview">
+           <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
+      
+            <div class="mdl-card mdl-cell mdl-cell--12-col-desktop mdl-cell--7-col-tablet mdl-cell--5-col-phone">
+              <div class="mdl-card__supporting-text">
+              <div class="mdl-typography--display-1 mdl-cell mdl-cell--12-col-desktop mdl-cell--7-col-tablet mdl-cell--5-col-phone" align="center">Maksuhäiriöiden maantiede
+              </div>
+              <div class="mdl-cell mdl-cell--12-col mdl-cell--7-col-tablet mdl-cell--5-col-phone mdl-typography--title" align="center"> Suomessa yli kahdeksalla prosentilla aikuisista on maksuhäiriömerkintä. Tutustu maksuhäiriöiden alueelliseen jakautumiseen. Voit edetä joko syöttämällä postinumeron, tai vaihtoehtoisesti koskettamalla tai klikkailemalla karttaa.
+              </div>
+
+  <div class="ui-widget">
+    <div class="mdl-textfield mdl-js-textfield">
+      <label class="mdl-textfield__label" for="country">Kirjoita postinumero (esim. 00500): </label>
+      <input id="country" class="mdl-textfield__input">
+    </div>
+</div>
+  <div class="mdl-cell mdl-cell--12-col"  id='map'></div>
+ <div id="faktat">
+  <div class="mdl-grid">
+  <div class="mdl-cell mdl-cell--12-col mdl-typography--headline" align="center" id="posti-alue"></div>
+    
+    <div class="mdl-cell mdl-cell--4-col">
+      <div class="mdl-typography--title" style="text-align: center" id="maksuhairio-ots"></div>
+      <div id="power-gauge" mittari="1" align="center"></div>
+      <div class="mdl-typography--title" style="text-align: center" id="maksuhairiot-2016" align="center"></div>
+    </div>
+
+    <div class="mdl-cell mdl-cell--4-col">
+      <div class="mdl-typography--title" style="text-align: center" id="mediaanitulot-ots"></div>
+      <div id="power-gauge" mittari="2" align="center"></div>
+      <div class="mdl-typography--title" style="text-align: center" id="mediaanitulot" align="center"></div>
+    </div>
+
+    <div class="mdl-cell mdl-cell--4-col">
+      <div class="mdl-typography--title" style="text-align: center" id="tyottomat-ots"></div>
+      <div id="power-gauge" mittari="3" align="center"></div>
+      <div class="mdl-typography--title" style="text-align: center" id="tyottomat" align="center"></div>
+    </div>
+
+</div>
+    <div mdl-cell mdl-cell--12-col id="kunta-nimi" class="mdl-typography--title" ></div>
+    <div mdl-cell mdl-cell--12-col id="tekstit" style="padding-top: 10px"></div>
+</div>
+
+              </div>
+
+            
+          </section>
+       
+    
+        </div>
+        <div class="mdl-layout__tab-panel" id="features">
+          <section class="section--center mdl-grid mdl-grid--no-spacing">
+            <div class="mdl-cell mdl-cell--12-col">
+                <h4>Analyysi</h4>
+                <p>
+                    Hankin maksuhäiriöt Bisnoden <a href="https://www.bisnode.com/suomi/maksuhairiolaskuri/">maksuhäiriölaskurista</a>. Käytin tähän "skreippaamisen" R-ohjelman RSelenium -kirjastoa. Karsin heti aluksi pois postialueet, joilla väkiluku oli alle 200. Niin pienet otokset antavat hieman sattumanvaraisia lukuja. 
+                </p>
+               
+                <p id="lorem2">
+                    Seuraavaksi latasin Tilastokeskuksen Paavo-rajapintapalvelun kautta kaikki mahdolliset tiedot, joita postialueittain oli saatavilla. Koetin katsoa, josko jokin Tilastokeskuksen aineistossa oleva muuttuja korreloisi maksuhäiriöiden kanssa. Eipä korreloinut. Ainoastaan käytettävissä olevien tulojen mediaani ja työttömät/työvoima nousivat muita enemmän esiin. Niidenkin "selitysvoima", eli R&sup2 oli kuitenkin sekin hyvin pieni – alle 15 %. Minkään yksittäisen tekijän ei siis nähdäkseni voi sanoa "selittävän" maksuhäiriöiden määrää. Tein datan analysoinnin, yhdistelyn ja siivouksen R:llä.  
+                </p>
+                <p>
+                    En hirveästi pidä kartoista, koska niiden mobiilikäytettävyys on huono. Puhelimissa ja tableteissa ei ole "hover"-toiminnallisuutta joilla alueita voisi tutkia hiirtä liikuttamalla eikä zoomin käyttäminen ole miellyttävää. Alueiden klikkailu taas on sekin tuskastuttavaa. <i>Tekniikan </i> kannalta kartta on siis huono ratkaisu.  Toisaalta tässä aiheessa juuri alueelliset erot ovat  kiinnostavia: onko minun asuinalueellani enemmän maksuhäiriöiden kanssa painiskelevia ihmisiä kuin asuinalueella x. Näin ollen <i>sisällön</i> kannalta kartta on hyvä ratkaisu. Päätin ratkaista tämän ristiriidan niin, että kartan lisäksi tein ennustavan "hakukentän", jolla kartalla voi myös navigoida. Lisäksi päätin listata saman kunnan muut postialueet pötköksi kartan loppuun, koska vetailu nimenomaan naapurialueisiin on mielekkäintä. Lisäksi ihmisiä luultavasti kiinnostaa eniten oman kotikaupungin tilanne. 
+                
+                <p id="lorem4">
+                    Kartta käyttää mobiiliystävällisen <a href="http://www.leafletjs.com">Leafletin</a> tekniikkaa, mutta <a href="http://www.cartodb.com">CartoDB</a>:n kautta.  CartoDB on rakennettu SQL-tietokannan päälle, joten tietojen hakeminen (rajapinnan kautta) kannasta oli mahdollista. Omat koodaukset ovat sekoitus JQuerya ja D3JS:ää. Tämä sivu on rakennettu Googlen <a href="https://github.com/google/web-starter-kit">Web Starter Kitin</a> päälle, joka on optimoitu valmiiksi responsiiviseksi. 
+                </p>
+                <h4>Kysymykset</h4>
+
+                <p id="lorem4"><b>A) Responsiivisuus ja mobile first. </b>Responsiivisuus tarkoittaa, että sivujen tekniikassa huomioidaan laitteiden näyttöjen koko sekä se, miten laitteet toimivat. Esimerkiksi tämä sivu on rakennettu responsiivisen tekniikan päälle. Kun responsiivisuus on huomioitu, ei tarvitse tehdä samaa työtä useaan kertaan, vaan sama sisältö toimii heti ensimmäisellä kerralla kaikilla käyttäjillä.  
+                </p>
+
+                <p id="lorem4">Mobile first viitannee siihen,  että useilla mediataloilla mobiilikäyttäjät ovat jo suurempi joukko kuin desktop-käyttäjät ja epäsuhta on kasvamaan päin. Tästä johtuen on loogista suunnitella kaikki niin, että ne toimivat parhaiten puhelimilla ja tableteilla.  Jos ratkaisuissa pitää tehdä valintoja joka  suosii joko mobiilin tai desktopia, valitaan mobiili.
+                </P> 
+
+                <p id="lorem4"><b>B) Mieluisin dataformaatti verkossa</b> on luultavasti JSON, perustuen ihan siihen, mitä tulee eniten käytettyä ja minkä kanssa pystyy helpoiten elämään. JSON tulee myös useimmiten API:en kanssa vastaan. Se on kevyt, helppo jäsentää ja siedettävä myös ihmisen lukea. Selaimiin asennettavilla lisäosilla monimutkaisistakin feedeistä saa helposti silmäiltyä oleellisen.  
+                </p>
+             
+
+                <p id="lorem4"><b>C) ([0-9]{2})([0-9]{2})([0-9]{2})-([0-9a-zA-Z]{4})</b> esittää ainakin suomalaista henkilötunnusta (regular expression). </p>
+             
+                <p id="lorem4"><b>D) Miksi kaivonkannet ovat pyöreitä?</b> Ilmeisesti pyöreyden ansiosta kansi ei pääse putoamaan missään asennossa alas. Tästä vastauksesta menee krediitit Googlelle. </p>
+
+
+                <p id="lorem4"> <b> E)Listaa kolme asiaa jotka ovat onnistuneet <a href="http://yle.fi/uutiset/7668251">Yle Uutisten jutussa</a>  ja mitkä asiat olisi voinut tehdä toisin.</b></p>
+
+                <p id="lorem4"> Kolme plussaa:<br> 1) Aihe on tärkeä, kiinnostava ja siinä on paljon potentiaalia suosituksi nettijutuksi. <br> 2) Kunnianhimoinen ote, joka näkyy heti ensimmäisistä kappaleista.  Juttua tehdessä on selkeästi haluttu tarjota yleisölle syvällinen ja ajatuksella tehty juttu.<br> 3) Otsikko ja ingressi toimivat hyvin.</p>
+
+                <p id="lorem4">Kolme miinusta:<br> 1) Rakenne on melkoinen sekamelska. Tarina leviää niin moneen suuntaan, että sen kerrontatapa ei ole parhamillaan yhtenä pötkönä.  Tässä olisi mielestäni ollut perusteltua irtaantua Ylen layoutista ja suunnitella jutulle spesiaalirakenne, ulkoasu sekä jakaa teksti useisiin osiin, jotka olisivat toimineet myös itsenäisesti. Sisällöllisesti juttu kaipaisi enemmän kohtauksia. <br>2) Graafikat rikkovat surutta "neljän sekunnin sääntöä", eli aikaa jonka aikana viesti pitäisi ymmärtää. Tämä on ok silloin, kun siihen on perusteet, mutta tässä pidempikään perehtyminen ei oikein palkitse. Mitä merkitsee se, että kokaiinia viedään vaikkapa 60 tonnia + 15 tonnia Eurooppaan? Onko se paljon vai vähän – nousussa vai laskussa? Heroiinikartan kohdalla joutuu jo melkein ottamaan kynän ja paperia, että pysyy kärryillä. Tiedot ovat myös aika vanhoja (2009), kun juttu kuitenkin keskittyy tilanteeseen juuri nyt (2014). Pylväs- tai aikasarjagraafit olisivat mielestäni toimineet paremmin. <br> 3) Jutussa käytetään loppujen lopuksi aika niukasti hyväksi verkon kerrontakeinoja. Mielestäni se ei pääse "iholle" ja on vaikea hahmottaa, kenen näkökulmaan lukijan pitäisi asettua. Lukijaa ei myöskään ohjata eikä kokemisen mahdollisuuksia tarjota. Olisin vienyt tarinaa rajusti makrotasolta mikrotasolle niin kerronnan kuin sisällön kautta.  </p>
+
+                 <p id="lorem4"><b>F) Isoin yritys tuen saaja vuonna 2013 oli Viking Line Abp. Viking line Abpllä on töissä 20000 työntekijää.”</b> --> Yritystukea vuonna 2013 sai eniten Viking Line. Yhtiössä työskentelee noin 20 000 työntekijää. </p>
+
+                 <p id="lorem4"><b>G) Mikä keskeinen ero on PHP:lla ja JavaScriptillä?</b> Tästä saisi helposti väittelyn pystyyn, mutta käytännössä se, että toinen on selkeästi palvelinpuolen (back-end, server side jne.) ja toinen enimmäkseen selainpuolen (front-end, client side) kieli. Kuitenkin myös Javascriptiä voidaan käyttää "back-endinä": tämä onnistuu esimerkiksi Node.js -kirjastolla, jonka opettelu itselläni on työn alla. Loppujen lopuksi ero on ainakin se, että käytännössä kaikissa moderneissa selaimissa on natiivina tuki javascriptille.  </p>
+             
+            </div>
+          </section>
+
+
+        </div>
+          
+            <div class="mdl-layout__tab-panel" id="yhteystiedot">
+          <section class="section--center mdl-grid mdl-grid--no-spacing">
+            <div class="mdl-cell mdl-cell--12-col">
+              <h4>Yhteystiedot</h4>
+              <p>
+               +358 50 536 5486, antti.saarenpaa@gmail.com, Skype: anttisaarenpaa
+              </p>
+              <p>
+          
+ 
+            </div>
+          </section>
+        </div>
+       
+      </main>
+    </div>
+
+    <script src="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.min.js"></script>
+ 
+    <!-- Built with love using Web Starter Kit -->
+  </body>
+</html>
